@@ -10,14 +10,11 @@ fn main() {
     let focal_length = 1.0;
     let camera_center = Vector3D::new(0.0, 0.0, 0.0);
     let viewport = Viewport::new(2.0 * 9.0 / 16.0, 2.0);
-    let image = ppm::test_image(400);
+    let width = 400;
+    let height: f64 = f64::from(width) / 9.0 * 16.0;
 
-    let delta_u = viewport
-        .viewpoint_u()
-        .scalar_mul(1.0 / f64::from(image.width()));
-    let delta_v = viewport
-        .viewpoint_v()
-        .scalar_mul(1.0 / f64::from(image.height()));
+    let delta_u = viewport.viewpoint_u().scalar_mul(1.0 / f64::from(width));
+    let delta_v = viewport.viewpoint_v().scalar_mul(1.0 / height);
 
     let viewport_upper_left = camera_center
         - Vector3D::new(0.0, 0.0, focal_length)
@@ -26,7 +23,7 @@ fn main() {
 
     let pixel00_location = viewport_upper_left + (delta_u + delta_v).scalar_mul(0.5);
 
-    let image = ppm::test_image(width)
+    let image = ppm::test_image(width, pixel00_location, delta_u, delta_v);
 
     ppm::create_ppm_image(image, "image.ppm");
 }

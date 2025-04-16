@@ -9,6 +9,9 @@ pub struct Vector3D {
 }
 
 impl Vector3D {
+    pub fn y(self) -> f64 {
+        self.y
+    }
     pub fn new(x: f64, y: f64, z: f64) -> Self {
         return Self { x, y, z };
     }

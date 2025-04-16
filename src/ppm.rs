@@ -12,12 +12,12 @@ pub struct PpmImage {
 pub fn test_image(width: u32, start: Vector3D, delta_u: Vector3D, delta_v: Vector3D) -> PpmImage {
     let height = generate_height(width);
     let mut fields: Vec<Vector3D> = Vec::with_capacity((width*height).try_into().expect("failed to alloc for fields"));
-    for i in 0..width {
-        for j in 0..width {
+    for i in 1..=width {
+        for j in 1..=height {
             let pixel_center = start + (delta_u.scalar_mul(i.into())) + delta_v.scalar_mul(j.into());
             let direction = pixel_center - start;
             let new_ray = Ray::new(start, direction);
-            let color = blend_color(0.4, Vector3D::new(1.0, 1.0, 1.0).to_u8_range(), Vector3D::new(0.5, 0.7, 1.0).to_u8_range());
+            let color = new_ray.color();
             fields.push(color);
         }
     }
@@ -60,10 +60,5 @@ pub fn create_ppm_image(image: PpmImage, path: &str) {
 
 pub fn generate_height(width: u32) -> u32 {
     let height = width / (16/9);
-    height.min(1)
+    height.max(1)
 } 
-
-// alpha goes from zero to one
-fn blend_color(alpha: f64, start: Vector3D, end: Vector3D) -> Vector3D {
-    start.scalar_mul(1.0-alpha) + end.scalar_mul(alpha)
-}
