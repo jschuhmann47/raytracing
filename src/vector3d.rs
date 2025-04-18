@@ -1,6 +1,7 @@
 use std::ops::{Add, Mul, Sub};
 
-// Values between 0 and 1
+use crate::color::Color;
+
 #[derive(Clone, Copy)]
 pub struct Vector3D {
     x: f64,
@@ -15,16 +16,14 @@ impl Vector3D {
     pub fn new(x: f64, y: f64, z: f64) -> Self {
         return Self { x, y, z };
     }
-    pub fn to_line(self) -> String {
-        format!("{} {} {}\n", self.x, self.y, self.z)
-    }
 
-    pub fn to_u8_range(self) -> Self {
-        Self {
-            x: (self.x * 255.999).trunc(),
-            y: (self.y * 255.999).trunc(),
-            z: (self.z * 255.999).trunc(),
-        }
+    pub fn to_color(self) -> Color {
+        // Assuming that x,y,z are in the range of [0;1]
+        Color::new(
+            (self.x * 255.999).trunc() as u8, 
+            (self.y * 255.999).trunc() as u8, 
+            (self.z * 255.999).trunc() as u8
+        )
     }
 
     pub fn scalar_mul(self, t: f64) -> Self {
@@ -79,8 +78,4 @@ impl Sub for Vector3D {
             z: self.z - rhs.z,
         }
     } 
-}
-
-pub fn random_color() -> Vector3D {
-    Vector3D { x: 0.1, y: 0.2, z: 0.3 }
 }

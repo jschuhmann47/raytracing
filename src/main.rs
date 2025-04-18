@@ -1,18 +1,20 @@
+use std::{fs::File, io::Write};
 use vector3d::Vector3D;
 use viewport::Viewport;
 
+mod color;
 mod ppm;
 mod ray;
 mod vector3d;
 mod viewport;
+const ASPECT_RADIO: f64 = 16.0 / 9.0;
 
 fn main() {
-    let aspect_radio = 16.0 / 9.0;
     let focal_length = 1.0;
     let camera_center = Vector3D::new(0.0, 0.0, 0.0);
-    let viewport = Viewport::new(2.0 / aspect_radio, 2.0);
+    let viewport = Viewport::new(2.0 / ASPECT_RADIO, 2.0);
     let width = 400;
-    let height: f64 = f64::from(width) / 9.0 * 16.0;
+    let height: f64 = f64::from(width) / ASPECT_RADIO;
 
     let delta_u = viewport.viewpoint_u().scalar_mul(1.0 / f64::from(width));
     let delta_v = viewport.viewpoint_v().scalar_mul(1.0 / height);
@@ -26,5 +28,11 @@ fn main() {
 
     let image = ppm::test_image(width, pixel00_location, delta_u, delta_v);
 
-    ppm::create_ppm_image(image, "image.ppm");
+    create_ppm_image(image, "image.ppm");
+}
+
+pub fn create_ppm_image(image: ppm::PpmImage, path: &str) {
+    let mut file = File::create(path).expect("failed to create image");
+    file.write_all(image.to_string().as_bytes())
+        .expect("failed to write file")
 }

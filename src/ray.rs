@@ -1,4 +1,4 @@
-use crate::vector3d::Vector3D;
+use crate::{color::Color, vector3d::Vector3D};
 
 pub struct Ray {
     point: Vector3D,
@@ -14,9 +14,10 @@ impl Ray {
         Ray { point, direction }
     }
 
-    pub fn color(self) -> Vector3D {
+    pub fn color(self) -> Color {
         let unit_direction: Vector3D = self.direction.normalize();
         let alpha = 0.5 * (unit_direction.y() + 1.0);
-        Vector3D::new(1.0, 1.0, 1.0).scalar_mul(1.0 - alpha) + Vector3D::new(0.5, 0.7, 1.0).scalar_mul(alpha)
+        let result = Vector3D::new(1.0, 1.0, 1.0).scalar_mul(1.0 - alpha) + Vector3D::new(0.5, 0.7, 1.0).scalar_mul(alpha);
+        result.to_color()
     }
 }
