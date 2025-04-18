@@ -7,9 +7,10 @@ mod vector3d;
 mod viewport;
 
 fn main() {
+    let aspect_radio = 16.0 / 9.0;
     let focal_length = 1.0;
     let camera_center = Vector3D::new(0.0, 0.0, 0.0);
-    let viewport = Viewport::new(2.0 * 9.0 / 16.0, 2.0);
+    let viewport = Viewport::new(2.0 / aspect_radio, 2.0);
     let width = 400;
     let height: f64 = f64::from(width) / 9.0 * 16.0;
 

@@ -45,7 +45,7 @@ impl ToString for PpmImage {
         text.push_str(format!("{} {}\n", self.width, self.height).as_str());
         text.push_str(format!("{}\n", self.max_color_value).as_str());
         for (i, color) in self.fields.iter().enumerate() {
-            println!("Generating line {} of {}", i + 1, self.fields.len());
+            println!("Generating: {}%", ((i + 1) * 100 / self.fields.len()));
             text.push_str(color.to_u8_range().to_line().as_str());
         }
         text
@@ -59,6 +59,7 @@ pub fn create_ppm_image(image: PpmImage, path: &str) {
 }
 
 pub fn generate_height(width: u32) -> u32 {
-    let height = width / (16/9);
-    height.max(1)
+    let height : f64 = f64::from(width) / (16.0/9.0);
+    let height = height.max(1.0);
+    height.trunc() as u32
 } 
