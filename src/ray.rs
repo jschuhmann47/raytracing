@@ -1,4 +1,4 @@
-use crate::{color::Color, sphere::Sphere, vector3d::Vector3D};
+use crate::{color::Color, hittable::Hittable, sphere::Sphere, vector3d::Vector3D};
 
 pub struct Ray {
     origin: Vector3D,
@@ -6,7 +6,7 @@ pub struct Ray {
 }
 
 impl Ray {
-    pub fn at(self, t: f64) -> Vector3D {
+    pub fn at(&self, t: f64) -> Vector3D {
         self.direction.scalar_mul(t) + self.origin
     }
 
@@ -17,8 +17,8 @@ impl Ray {
     pub fn color(self) -> Color {
         let sphere_origin = Vector3D::new(0.0, 0.0, -1.0);
         let test_sphere = Sphere::new(sphere_origin, 0.5);
-        if let Some(t) = test_sphere.hit(&self) {
-            let normal = (self.at(t) - sphere_origin).normalize();
+        if let Some(hit_info) = test_sphere.hit(0.0, 1000.0, &self) {
+            let normal = (self.at(hit_info.t()) - sphere_origin).normalize();
             return normal.scalar_sum(1.0).scalar_mul(0.5).to_color()
         }
         let unit_direction: Vector3D = self.direction.normalize();

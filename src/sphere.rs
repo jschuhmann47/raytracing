@@ -1,4 +1,4 @@
-use crate::{ray::Ray, vector3d::Vector3D};
+use crate::{hittable::{HitInfo, Hittable}, ray::Ray, vector3d::Vector3D};
 
 pub struct Sphere {
     center: Vector3D,
@@ -9,18 +9,29 @@ impl Sphere {
     pub fn new(center: Vector3D, radius: f64) -> Self {
         Self { center, radius }
     }
-
-    pub fn hit(self, ray: &Ray) -> Option<f64> {
+}
+impl Hittable for Sphere {
+    fn hit(self, t_min: f64, t_max: f64, ray: &Ray) -> Option<HitInfo> {
         let oc = self.center - ray.origin();
-        // a, b and c come from the quadratic formula
-        let a = ray.direction().dot_product(ray.direction());
-        let b = -2.0 * ray.direction().dot_product(oc);
+        let a = ray.direction().squared_length();
+        let h = ray.direction().dot_product(oc);
         let c = oc.dot_product(oc) - self.radius * self.radius;
-        let discriminant = b * b - 4.0 * a * c;
+        let discriminant = h * h - a * c;
+        let mut root = (h-discriminant.sqrt())/a;
         if discriminant < 0.0 {
-            None
-        } else {
-            Some((-b-discriminant.sqrt())/(2.0*a))
+            return None;
+        } 
+        if root < t_min || root > t_max {
+            root = (h+discriminant.sqrt())/a;
+            if root < t_min || root > t_max {
+                return None;
+            }
         }
+        let ray_at_root = ray.at(root);
+        Some(HitInfo::new(
+            ray_at_root,
+            (ray_at_root - self.center).scalar_div(self.radius),
+            root
+        ))
     }
 }

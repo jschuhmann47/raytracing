@@ -8,6 +8,7 @@ mod ray;
 mod vector3d;
 mod viewport;
 mod sphere;
+mod hittable;
 
 const ASPECT_RADIO: f64 = 16.0 / 9.0;
 

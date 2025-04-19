@@ -17,8 +17,8 @@ impl Vector3D {
         return Self { x, y, z };
     }
 
+    /// Works assuming that x, y and z are in the range of ``[0;1]``
     pub fn to_color(self) -> Color {
-        // Assuming that x,y,z are in the range of [0;1]
         Color::new(
             (self.x * 255.999).trunc() as u8,
             (self.y * 255.999).trunc() as u8,
@@ -60,12 +60,17 @@ impl Vector3D {
     }
 
     fn length(self) -> f64 {
-        (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
+        self.squared_length().sqrt()
     }
 
     pub fn dot_product(self, vec: Vector3D) -> f64 {
         let mul = self * vec;
         mul.x + mul.y + mul.z
+    }
+
+    /// Equivalent of doing `vector.dot_product(vector)` but faster
+    pub fn squared_length(&self) -> f64 {
+        self.x.powi(2) + self.y.powi(2) + self.z.powi(2)
     }
 }
 
