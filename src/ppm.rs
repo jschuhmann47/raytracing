@@ -14,11 +14,11 @@ pub fn test_image(width: u32, camera_center: Vector3D, start: Vector3D, delta_u:
             .try_into()
             .expect("failed to parse width and height to usize"),
     );
-    for j in 0..height {
-        for i in 0..width {
+    for j in 1..=height {
+        for i in 1..=width {
             let pixel_center =
                 start + (delta_u.scalar_mul(i.into())) + delta_v.scalar_mul(j.into());
-            let direction = pixel_center - start;
+            let direction = pixel_center - camera_center;
             let new_ray = Ray::new(camera_center, direction);
             let color = new_ray.color();
             fields.push(color);
