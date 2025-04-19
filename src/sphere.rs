@@ -10,13 +10,17 @@ impl Sphere {
         Self { center, radius }
     }
 
-    pub fn is_ray_hitting(self, ray: &Ray) -> bool {
+    pub fn hit(self, ray: &Ray) -> Option<f64> {
         let oc = self.center - ray.origin();
         // a, b and c come from the quadratic formula
         let a = ray.direction().dot_product(ray.direction());
         let b = -2.0 * ray.direction().dot_product(oc);
         let c = oc.dot_product(oc) - self.radius * self.radius;
         let discriminant = b * b - 4.0 * a * c;
-        discriminant >= 0.0
+        if discriminant < 0.0 {
+            None
+        } else {
+            Some((-b-discriminant.sqrt())/(2.0*a))
+        }
     }
 }

@@ -42,6 +42,14 @@ impl Vector3D {
         }
     }
 
+    pub fn scalar_sum(self, t: f64) -> Self {
+        Self {
+            x: self.x + t,
+            y: self.y + t,
+            z: self.z + t,
+        }
+    }
+
     pub fn normalize(self) -> Self {
         let length = self.length();
         Self {

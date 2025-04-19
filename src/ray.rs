@@ -15,9 +15,11 @@ impl Ray {
     }
 
     pub fn color(self) -> Color {
-        let test_sphere = Sphere::new(Vector3D::new(0.0, 0.0, -1.0), 0.5);
-        if test_sphere.is_ray_hitting(&self) {
-            return Color::new(255, 0, 0);
+        let sphere_origin = Vector3D::new(0.0, 0.0, -1.0);
+        let test_sphere = Sphere::new(sphere_origin, 0.5);
+        if let Some(t) = test_sphere.hit(&self) {
+            let normal = (self.at(t) - sphere_origin).normalize();
+            return normal.scalar_sum(1.0).scalar_mul(0.5).to_color()
         }
         let unit_direction: Vector3D = self.direction.normalize();
         let alpha = 0.5 * (unit_direction.y() + 1.0);
