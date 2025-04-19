@@ -20,9 +20,9 @@ impl Vector3D {
     pub fn to_color(self) -> Color {
         // Assuming that x,y,z are in the range of [0;1]
         Color::new(
-            (self.x * 255.999).trunc() as u8, 
-            (self.y * 255.999).trunc() as u8, 
-            (self.z * 255.999).trunc() as u8
+            (self.x * 255.999).trunc() as u8,
+            (self.y * 255.999).trunc() as u8,
+            (self.z * 255.999).trunc() as u8,
         )
     }
 
@@ -34,13 +34,30 @@ impl Vector3D {
         }
     }
 
+    pub fn scalar_div(self, t: f64) -> Self {
+        Self {
+            x: self.x / t,
+            y: self.y / t,
+            z: self.z / t,
+        }
+    }
+
     pub fn normalize(self) -> Self {
         let length = self.length();
-        Self { x: self.x / length, y: self.y / length, z: self.z /length }
+        Self {
+            x: self.x / length,
+            y: self.y / length,
+            z: self.z / length,
+        }
     }
 
     fn length(self) -> f64 {
         (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
+    }
+
+    pub fn dot_product(self, vec: Vector3D) -> f64 {
+        let mul = self * vec;
+        mul.x + mul.y + mul.z
     }
 }
 
@@ -77,5 +94,18 @@ impl Sub for Vector3D {
             y: self.y - rhs.y,
             z: self.z - rhs.z,
         }
-    } 
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn dot_product_ok() {
+        let some_vec = Vector3D::new(2.0, -2.0, 3.0);
+        let another_vec = Vector3D::new(4.0, 1.0, 2.0);
+        let result = some_vec.dot_product(another_vec);
+        assert_eq!(result, 12.0);
+    }
 }

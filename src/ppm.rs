@@ -7,20 +7,19 @@ pub struct PpmImage {
     fields: Vec<Color>,
 }
 
-pub fn test_image(width: u32, start: Vector3D, delta_u: Vector3D, delta_v: Vector3D) -> PpmImage {
+pub fn test_image(width: u32, camera_center: Vector3D, start: Vector3D, delta_u: Vector3D, delta_v: Vector3D) -> PpmImage {
     let height = generate_height(width);
     let mut fields: Vec<Color> = Vec::with_capacity(
         (width * height)
             .try_into()
             .expect("failed to parse width and height to usize"),
     );
-    // for i in 1..=width
-    for j in 1..=height {
-        for i in 1..=width {
+    for j in 0..height {
+        for i in 0..width {
             let pixel_center =
                 start + (delta_u.scalar_mul(i.into())) + delta_v.scalar_mul(j.into());
             let direction = pixel_center - start;
-            let new_ray = Ray::new(start, direction);
+            let new_ray = Ray::new(camera_center, direction);
             let color = new_ray.color();
             fields.push(color);
         }
