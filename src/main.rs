@@ -1,4 +1,6 @@
 use std::{fs::File, io::Write};
+use hittables::Hittables;
+use sphere::Sphere;
 use vector3d::Vector3D;
 use viewport::Viewport;
 
@@ -20,6 +22,11 @@ fn main() {
     let height: f64 = f64::from(width) / ASPECT_RADIO;
     let viewport = Viewport::new(2.0 * f64::from(width) / height, 2.0);
 
+    // World
+    let mut world = Hittables::new();
+    world.add(Box::new(Sphere::new(Vector3D::new(0.0, 0.0, -1.0), 0.5)));
+    world.add(Box::new(Sphere::new(Vector3D::new(0.0, -100.5, -1.0), 100.0)));
+
     let delta_u = viewport.viewpoint_u().scalar_div(f64::from(width));
     let delta_v = viewport.viewpoint_v().scalar_div(height);
 
@@ -30,7 +37,7 @@ fn main() {
 
     let pixel00_location = viewport_upper_left + (delta_u + delta_v).scalar_div(2.0);
 
-    let image = ppm::test_image(width, camera_center, pixel00_location, delta_u, delta_v);
+    let image = ppm::test_image(width, camera_center, pixel00_location, delta_u, delta_v, &world);
 
     create_image(image, "image.ppm");
 }

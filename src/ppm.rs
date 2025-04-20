@@ -1,4 +1,4 @@
-use crate::{ASPECT_RADIO, color::Color, ray::Ray, vector3d::Vector3D};
+use crate::{color::Color, hittables::Hittables, ray::Ray, vector3d::Vector3D, ASPECT_RADIO};
 
 pub struct PpmImage {
     width: u32,
@@ -7,7 +7,7 @@ pub struct PpmImage {
     fields: Vec<Color>,
 }
 
-pub fn test_image(width: u32, camera_center: Vector3D, start: Vector3D, delta_u: Vector3D, delta_v: Vector3D) -> PpmImage {
+pub fn test_image(width: u32, camera_center: Vector3D, start: Vector3D, delta_u: Vector3D, delta_v: Vector3D, world: &Hittables) -> PpmImage {
     let height = generate_height(width);
     let mut fields: Vec<Color> = Vec::with_capacity(
         (width * height)
@@ -20,7 +20,7 @@ pub fn test_image(width: u32, camera_center: Vector3D, start: Vector3D, delta_u:
                 start + (delta_u.scalar_mul(i.into())) + delta_v.scalar_mul(j.into());
             let direction = pixel_center - camera_center;
             let new_ray = Ray::new(camera_center, direction);
-            let color = new_ray.color();
+            let color = new_ray.color(world);
             fields.push(color);
         }
     }

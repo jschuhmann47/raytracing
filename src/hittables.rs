@@ -1,6 +1,6 @@
 use crate::{hittable::Hittable, ray::Ray};
 
-struct Hittables {
+pub struct Hittables {
     hittables: Vec<Box<dyn Hittable>>
 }
 
