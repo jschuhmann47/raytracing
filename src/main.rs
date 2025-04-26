@@ -12,6 +12,7 @@ mod viewport;
 mod sphere;
 mod hittable;
 mod hittables;
+mod interval;
 
 const ASPECT_RADIO: f64 = 16.0 / 9.0;
 

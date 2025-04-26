@@ -1,7 +1,7 @@
-use crate::{ray::Ray, vector3d::Vector3D};
+use crate::{interval::Interval, ray::Ray, vector3d::Vector3D};
 
 pub trait Hittable {
-    fn hit(&self, t_min: f64, t_max: f64, ray: &Ray) -> Option<HitInfo>;
+    fn hit(&self, interval: &Interval, ray: &Ray) -> Option<HitInfo>;
 }
 
 pub struct HitInfo {

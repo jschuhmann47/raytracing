@@ -1,4 +1,4 @@
-use crate::{hittable::Hittable, ray::Ray};
+use crate::{hittable::Hittable, interval::Interval, ray::Ray};
 
 pub struct Hittables {
     hittables: Vec<Box<dyn Hittable>>
@@ -15,9 +15,9 @@ impl Hittables {
 }
 
 impl Hittable for Hittables {
-    fn hit(&self, t_min: f64, t_max: f64, ray: &Ray) -> Option<crate::hittable::HitInfo> {
+    fn hit(&self, interval: &Interval, ray: &Ray) -> Option<crate::hittable::HitInfo> {
         for object in &self.hittables {
-            if let Some(info) = object.hit(t_min, t_max, ray) {
+            if let Some(info) = object.hit(&interval, ray) {
                 return Some(info);
             }
         }

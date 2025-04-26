@@ -1,4 +1,4 @@
-use crate::{hittable::{HitInfo, Hittable}, ray::Ray, vector3d::Vector3D};
+use crate::{hittable::{HitInfo, Hittable}, interval::Interval, ray::Ray, vector3d::Vector3D};
 
 pub struct Sphere {
     center: Vector3D,
@@ -11,7 +11,7 @@ impl Sphere {
     }
 }
 impl Hittable for Sphere {
-    fn hit(&self, t_min: f64, t_max: f64, ray: &Ray) -> Option<HitInfo> {
+    fn hit(&self, interval: &Interval, ray: &Ray) -> Option<HitInfo> {
         let oc = self.center - ray.origin();
         let a = ray.direction().squared_length();
         let h = ray.direction().dot_product(oc);
@@ -21,9 +21,9 @@ impl Hittable for Sphere {
             return None;
         } 
         let mut root = (h-discriminant.sqrt())/a;
-        if root < t_min || root > t_max {
+        if !interval.contains_inclusive(root) {
             root = (h+discriminant.sqrt())/a;
-            if root < t_min || root > t_max {
+            if !interval.contains(root) {
                 return None;
             }
         }
