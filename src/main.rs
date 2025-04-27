@@ -23,7 +23,6 @@ fn main() {
     let height: f64 = f64::from(width) / ASPECT_RADIO;
     let viewport = Viewport::new(2.0 * f64::from(width) / height, 2.0);
 
-    // World
     let mut world = Hittables::new();
     world.add(Box::new(Sphere::new(Vector3D::new(0.0, 0.0, -1.0), 0.5)));
     world.add(Box::new(Sphere::new(Vector3D::new(0.0, -100.5, -1.0), 100.0)));
