@@ -1,37 +1,10 @@
-use crate::{ASPECT_RADIO, color::Color, hittables::Hittables, ray::Ray, vector3d::Vector3D};
+use crate::color::Color;
 
 pub struct PpmImage {
     width: u32,
     height: u32,
     max_color_value: u8,
     fields: Vec<Color>,
-}
-
-pub fn test_image(
-    width: u32,
-    camera_center: Vector3D,
-    start: Vector3D,
-    delta_u: Vector3D,
-    delta_v: Vector3D,
-    world: &Hittables,
-) -> PpmImage {
-    let height = generate_height(width);
-    let mut fields: Vec<Color> = Vec::with_capacity(
-        (width * height)
-            .try_into()
-            .expect("failed to parse width and height to usize"),
-    );
-    for j in 1..=height {
-        for i in 1..=width {
-            let pixel_center =
-                start + (delta_u.scalar_mul(i.into())) + delta_v.scalar_mul(j.into());
-            let direction = pixel_center - camera_center;
-            let new_ray = Ray::new(camera_center, direction);
-            let color = new_ray.color(world);
-            fields.push(color);
-        }
-    }
-    PpmImage::new(width, height, 255, fields)
 }
 
 impl PpmImage {
@@ -72,10 +45,4 @@ impl ToString for PpmImage {
         }
         text
     }
-}
-
-pub fn generate_height(width: u32) -> u32 {
-    let height: f64 = f64::from(width) / ASPECT_RADIO;
-    let height = height.max(1.0);
-    height.trunc() as u32
 }
