@@ -1,15 +1,17 @@
 use crate::{hittable::Hittable, interval::Interval, ray::Ray};
 
 pub struct Hittables {
-    hittables: Vec<Box<dyn Hittable>>
+    hittables: Vec<Box<dyn Hittable>>,
 }
 
 impl Hittables {
     pub fn new() -> Self {
-        Self { hittables: Vec::new() }
+        Self {
+            hittables: Vec::new(),
+        }
     }
 
-    pub fn add(&mut self,element: Box<dyn Hittable>) {
+    pub fn add(&mut self, element: Box<dyn Hittable>) {
         self.hittables.push(element);
     }
 }

@@ -1,20 +1,20 @@
-use std::{fs::File, io::Write};
 use camera::Camera;
 use hittables::Hittables;
 use sphere::Sphere;
+use std::{fs::File, io::Write};
 use vector3d::Vector3D;
 use viewport::Viewport;
 
+mod camera;
 mod color;
-mod ppm;
-mod ray;
-mod vector3d;
-mod viewport;
-mod sphere;
 mod hittable;
 mod hittables;
 mod interval;
-mod camera;
+mod ppm;
+mod ray;
+mod sphere;
+mod vector3d;
+mod viewport;
 
 const ASPECT_RADIO: f64 = 16.0 / 9.0;
 
@@ -27,7 +27,10 @@ fn main() {
 
     let mut world = Hittables::new();
     world.add(Box::new(Sphere::new(Vector3D::new(0.0, 0.0, -1.0), 0.5)));
-    world.add(Box::new(Sphere::new(Vector3D::new(0.0, -100.5, -1.0), 100.0)));
+    world.add(Box::new(Sphere::new(
+        Vector3D::new(0.0, -100.5, -1.0),
+        100.0,
+    )));
 
     let camera = Camera::initialize(ASPECT_RADIO, width);
 

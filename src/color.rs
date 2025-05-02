@@ -1,4 +1,3 @@
-
 #[derive(Clone, Copy)]
 pub struct Color {
     r: u8,

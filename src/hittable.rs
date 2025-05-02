@@ -7,7 +7,7 @@ pub trait Hittable {
 pub struct HitInfo {
     point: Vector3D,
     normal: Vector3D,
-    t: f64
+    t: f64,
 }
 
 impl HitInfo {
@@ -30,6 +30,5 @@ impl HitInfo {
         } else {
             self.normal.scalar_mul(-1.0)
         }
-
     }
 }
