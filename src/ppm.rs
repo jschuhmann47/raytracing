@@ -24,12 +24,12 @@ pub fn test_image(width: u32, camera_center: Vector3D, start: Vector3D, delta_u:
             fields.push(color);
         }
     }
-    PpmImage {
+    PpmImage::new(
         width,
         height,
-        max_color_value: 255,
+        255,
         fields,
-    }
+    )
 }
 
 impl PpmImage {
@@ -47,6 +47,10 @@ impl PpmImage {
 
     pub fn fields(&self) -> &Vec<Color> {
         &self.fields
+    }
+
+    pub fn new(width: u32, height: u32, max_color_value: u8, fields: Vec<Color>) -> Self {
+        Self { width, height, max_color_value, fields }
     }
 }
 

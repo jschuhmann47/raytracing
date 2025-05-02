@@ -13,11 +13,11 @@ impl Viewport {
         }
     }
 
-    pub fn viewpoint_u(&self) -> Vector3D {
+    pub fn u(&self) -> Vector3D {
         self.viewport_u
     }
 
-    pub fn viewpoint_v(&self) -> Vector3D {
+    pub fn v(&self) -> Vector3D {
         self.viewport_v
     }
 }
