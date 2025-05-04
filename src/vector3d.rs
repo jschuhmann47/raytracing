@@ -1,6 +1,6 @@
 use std::ops::{Add, Mul, Sub};
 
-use crate::color::Color;
+use crate::{color::Color, interval::Interval};
 
 #[derive(Clone, Copy)]
 pub struct Vector3D {
@@ -10,6 +10,9 @@ pub struct Vector3D {
 }
 
 impl Vector3D {
+    pub fn x(self) -> f64 {
+        self.x
+    }
     pub fn y(self) -> f64 {
         self.y
     }
@@ -19,10 +22,20 @@ impl Vector3D {
 
     /// Works assuming that x, y and z are in the range of ``[0;1]``
     pub fn to_color(self) -> Color {
+        let intensity = Interval::new(0.0, 0.999);
         Color::new(
-            (self.x * 255.999).trunc() as u8,
-            (self.y * 255.999).trunc() as u8,
-            (self.z * 255.999).trunc() as u8,
+            (intensity.clamp(self.x) * 256.0) as u8,
+            (intensity.clamp(self.y) * 256.0) as u8,
+            (intensity.clamp(self.z) * 256.0) as u8,
+        )
+    }
+
+     /// Works assuming that x, y and z are in the range of ``[0;255]``
+     pub fn as_color(self) -> Color {
+        Color::new(
+            (self.x) as u8,
+            (self.y) as u8,
+            (self.z) as u8,
         )
     }
 

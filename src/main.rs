@@ -29,7 +29,7 @@ fn main() {
         100.0,
     )));
 
-    let camera = Camera::initialize(ASPECT_RADIO, width);
+    let camera = Camera::initialize(ASPECT_RADIO, width, 100);
 
     let image = camera.render(world);
 
