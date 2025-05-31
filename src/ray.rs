@@ -30,10 +30,14 @@ impl Ray {
         //     let normal = (self.at(hit_info.t()) - sphere_origin).normalize();
         //     return normal.scalar_sum(1.0).scalar_mul(0.5).to_color();
         // }
-        
+
         if let Some(info) = world.hit(&Interval::new(0.0, f64::MAX), &self) {
             let direction = info.normal().random_vec_on_hemisphere();
-            return Ray::new(info.origin(), direction).color(world).to_vector3d().scalar_mul(0.5).as_color()
+            return Ray::new(info.origin(), direction)
+                .color(world)
+                .to_vector3d()
+                .scalar_mul(0.5)
+                .as_color();
             // return info.normal().scalar_sum(1.0).scalar_mul(0.5).to_color();
         }
 

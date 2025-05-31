@@ -7,6 +7,6 @@ pub fn random_double() -> f64 {
 }
 
 pub fn random_between(min: f64, max: f64) -> f64 {
-     let mut rand = rand::rng();
+    let mut rand = rand::rng();
     rand.random_range(min..max)
 }

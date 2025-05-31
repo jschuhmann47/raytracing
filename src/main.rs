@@ -13,9 +13,9 @@ mod interval;
 mod ppm;
 mod ray;
 mod sphere;
+mod utils;
 mod vector3d;
 mod viewport;
-mod utils;
 
 const ASPECT_RADIO: f64 = 16.0 / 9.0;
 

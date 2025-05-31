@@ -1,5 +1,12 @@
 use crate::{
-    color::Color, hittable::Hittable, hittables::Hittables, ppm::PpmImage, ray::Ray, utils::{self, random_double}, vector3d::Vector3D, viewport::Viewport
+    color::Color,
+    hittable::Hittable,
+    hittables::Hittables,
+    ppm::PpmImage,
+    ray::Ray,
+    utils::{self, random_double},
+    vector3d::Vector3D,
+    viewport::Viewport,
 };
 
 pub struct Camera {
@@ -12,7 +19,7 @@ pub struct Camera {
     first_pixel_location: Vector3D,
     delta_u: Vector3D,
     delta_v: Vector3D,
-    pixel_samples_scale: f64
+    pixel_samples_scale: f64,
 }
 
 impl Camera {
@@ -67,13 +74,13 @@ impl Camera {
     fn get_ray(&self, i: u32, j: u32) -> Ray {
         let offset = Self::sample_square();
         let pixel_center = self.first_pixel_location
-        + self.delta_u.scalar_mul(f64::from(i) + offset.x())
-        + self.delta_v.scalar_mul(f64::from(j) + offset.y());
-    let direction = pixel_center - self.camera_center;
-    Ray::new(self.camera_center, direction)
+            + self.delta_u.scalar_mul(f64::from(i) + offset.x())
+            + self.delta_v.scalar_mul(f64::from(j) + offset.y());
+        let direction = pixel_center - self.camera_center;
+        Ray::new(self.camera_center, direction)
     }
 
     fn sample_square() -> Vector3D {
-       Vector3D::new(utils::random_double() - 0.5, random_double() - 0.5, 0.0)
+        Vector3D::new(utils::random_double() - 0.5, random_double() - 0.5, 0.0)
     }
 }

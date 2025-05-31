@@ -100,7 +100,7 @@ impl Vector3D {
             let squared_length = vec.squared_length();
             // 1e-160 check is to avoid ultra small vectors
             if squared_length > 1e-160 && squared_length <= 1.0 {
-                return vec.scalar_div(squared_length.sqrt())
+                return vec.scalar_div(squared_length.sqrt());
             }
         }
     }
@@ -111,7 +111,7 @@ impl Vector3D {
             vec
         } else {
             vec.scalar_mul(-1.0)
-        }
+        };
     }
 
     pub fn is_in_same_hemisfere(&self, vec: Vector3D) -> bool {
