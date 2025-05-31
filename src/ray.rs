@@ -23,14 +23,18 @@ impl Ray {
     }
 
     pub fn color(self, world: &Hittables) -> Color {
-        let sphere_origin = Vector3D::new(0.0, 0.0, -1.0);
-        let test_sphere = Sphere::new(sphere_origin, 0.5);
-        if let Some(hit_info) = test_sphere.hit(&Interval::new(0.0, 1000.0), &self) {
-            let normal = (self.at(hit_info.t()) - sphere_origin).normalize();
-            return normal.scalar_sum(1.0).scalar_mul(0.5).to_color();
-        }
+        // let sphere_origin = Vector3D::new(0.0, 0.0, -1.0);
+
+        // let test_sphere = Sphere::new(sphere_origin, 0.5);
+        // if let Some(hit_info) = test_sphere.hit(&Interval::new(0.0, 1000.0), &self) {
+        //     let normal = (self.at(hit_info.t()) - sphere_origin).normalize();
+        //     return normal.scalar_sum(1.0).scalar_mul(0.5).to_color();
+        // }
+        
         if let Some(info) = world.hit(&Interval::new(0.0, f64::MAX), &self) {
-            return info.normal().scalar_sum(1.0).scalar_mul(0.5).to_color();
+            let direction = info.normal().random_vec_on_hemisphere();
+            return Ray::new(info.origin(), direction).color(world).to_vector3d().scalar_mul(0.5).as_color()
+            // return info.normal().scalar_sum(1.0).scalar_mul(0.5).to_color();
         }
 
         let unit_direction: Vector3D = self.direction.normalize();

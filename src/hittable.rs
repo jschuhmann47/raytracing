@@ -23,6 +23,10 @@ impl HitInfo {
         self.t
     }
 
+    pub fn origin(&self) -> Vector3D {
+        self.point
+    }
+
     pub fn set_face_normal(&mut self, ray: &Ray, outward_normal: Vector3D) {
         let is_facing_front = ray.direction().dot_product(outward_normal) < 0.0;
         self.normal = if is_facing_front {

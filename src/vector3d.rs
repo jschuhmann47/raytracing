@@ -1,6 +1,10 @@
 use std::ops::{Add, Mul, Sub};
 
-use crate::{color::Color, interval::Interval};
+use crate::{
+    color::Color,
+    interval::Interval,
+    utils::{self, random_double},
+};
 
 #[derive(Clone, Copy)]
 pub struct Vector3D {
@@ -30,13 +34,9 @@ impl Vector3D {
         )
     }
 
-     /// Works assuming that x, y and z are in the range of ``[0;255]``
-     pub fn as_color(self) -> Color {
-        Color::new(
-            (self.x) as u8,
-            (self.y) as u8,
-            (self.z) as u8,
-        )
+    /// Works assuming that x, y and z are in the range of ``[0;255]``
+    pub fn as_color(self) -> Color {
+        Color::new((self.x) as u8, (self.y) as u8, (self.z) as u8)
     }
 
     pub fn scalar_mul(self, t: f64) -> Self {
@@ -84,6 +84,38 @@ impl Vector3D {
     /// Equivalent of doing `vector.dot_product(vector)` but faster
     pub fn squared_length(&self) -> f64 {
         self.x.powi(2) + self.y.powi(2) + self.z.powi(2)
+    }
+
+    fn random_vec(min: f64, max: f64) -> Self {
+        Self {
+            x: utils::random_between(min, max),
+            y: utils::random_between(min, max),
+            z: utils::random_between(min, max),
+        }
+    }
+
+    fn random_unit_vec() -> Self {
+        loop {
+            let vec = Self::random_vec(-1.0, 1.0);
+            let squared_length = vec.squared_length();
+            // 1e-160 check is to avoid ultra small vectors
+            if squared_length > 1e-160 && squared_length <= 1.0 {
+                return vec.scalar_div(squared_length.sqrt())
+            }
+        }
+    }
+
+    pub fn random_vec_on_hemisphere(&self) -> Self {
+        let vec = Self::random_unit_vec();
+        return if vec.is_in_same_hemisfere(*self) {
+            vec
+        } else {
+            vec.scalar_mul(-1.0)
+        }
+    }
+
+    pub fn is_in_same_hemisfere(&self, vec: Vector3D) -> bool {
+        self.dot_product(vec) > 0.0
     }
 }
 

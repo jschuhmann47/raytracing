@@ -1,7 +1,12 @@
 use rand::Rng;
 
-// TODO check if this can return 1.0
+/// Returns a random number between 0 and 1
 pub fn random_double() -> f64 {
     let mut rand = rand::rng();
-    rand.random::<f64>()
+    rand.random()
+}
+
+pub fn random_between(min: f64, max: f64) -> f64 {
+     let mut rand = rand::rng();
+    rand.random_range(min..max)
 }
